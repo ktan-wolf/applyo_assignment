@@ -5,17 +5,22 @@ import { getUserFromReq } from '../../../lib/auth'
 export default function handler(req: NextApiRequest, res: NextApiResponse) {
   try {
     const userId = getUserFromReq(req)
-    if (!userId) {
-      return res.status(401).json({ error: 'Not authenticated' })
+    if (!userId) return res.status(401).json({ error: 'Not authenticated' })
+
+    const { boardId } = req.query
+    const boardIdStr = Array.isArray(boardId) ? boardId[0] : boardId
+
+    console.log('Incoming boardId:', boardIdStr)
+
+    const board = boards.find(b => String(b.id) === String(boardIdStr))
+    if (!board) {
+      console.error('Board not found with ID:', boardIdStr)
+      return res.status(404).json({ error: 'Board not found' })
     }
 
-    // Ensure boardId is always a string
-    const boardIdParam = req.query.boardId
-    const boardId = Array.isArray(boardIdParam) ? boardIdParam[0] : boardIdParam
-
-    const board = boards.find(b => b.id === boardId)
-    if (!board) return res.status(404).json({ error: 'Board not found' })
-    if (board.ownerId !== userId) return res.status(403).json({ error: 'Forbidden' })
+    if (board.ownerId !== userId) {
+      return res.status(403).json({ error: 'Forbidden' })
+    }
 
     switch (req.method) {
       case 'POST': {
@@ -83,7 +88,7 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
         return res.status(405).json({ error: 'Method not allowed' })
     }
   } catch (error) {
-    console.error('API error in tasks/[boardId].ts:', error)
-    return res.status(500).json({ error: 'Internal server error' })
+    console.error('Unexpected error in tasks/[boardId].ts:', error)
+    return res.status(500).json({ error: 'Internal server error', details: String(error) })
   }
 }

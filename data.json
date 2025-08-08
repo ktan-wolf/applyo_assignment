@@ -69,7 +69,16 @@
       "id": "1754673607945",
       "ownerId": "1754656751420",
       "title": "work",
-      "tasks": []
+      "tasks": [
+        {
+          "id": "1754675613575",
+          "title": "dsfj;",
+          "description": "asdf;l",
+          "completed": false,
+          "createdAt": "2025-08-08T17:53:33.575Z",
+          "dueDate": "2025-08-14"
+        }
+      ]
     }
   ]
 }
