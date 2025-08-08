@@ -1,8 +1,8 @@
-// @ts-nocheck
+import type { NextApiRequest, NextApiResponse } from 'next'
 import { boards, users, saveData } from '../../../lib/data'
 import { getUserFromReq } from '../../../lib/auth'
 
-export default function handler(req, res) {
+export default function handler(req: NextApiRequest, res: NextApiResponse) {
   try {
     const userId = getUserFromReq(req)
     if (!userId) return res.status(401).json({ error: 'Not authenticated' })
@@ -14,7 +14,12 @@ export default function handler(req, res) {
 
     switch (req.method) {
       case 'POST': {
-        const { title, description, dueDate } = req.body || {}
+        const { title, description, dueDate } = req.body as {
+          title?: string
+          description?: string
+          dueDate?: string | null
+        }
+
         if (!title) return res.status(400).json({ error: 'Missing title' })
 
         const task = {
@@ -23,7 +28,7 @@ export default function handler(req, res) {
           description: description || '',
           completed: false,
           createdAt: new Date().toISOString(),
-          dueDate: dueDate || null
+          dueDate: dueDate || null,
         }
 
         board.tasks.push(task)
@@ -32,7 +37,7 @@ export default function handler(req, res) {
       }
 
       case 'PUT': {
-        const { taskId } = req.body || {}
+        const { taskId } = req.body as { taskId?: string }
         const task = board.tasks.find(x => x.id === taskId)
         if (!task) return res.status(404).json({ error: 'Task not found' })
 
@@ -42,7 +47,12 @@ export default function handler(req, res) {
       }
 
       case 'PATCH': {
-        const { taskId, title, description, dueDate } = req.body || {}
+        const { taskId, title, description, dueDate } = req.body as {
+          taskId?: string
+          title?: string
+          description?: string
+          dueDate?: string | null
+        }
         const task = board.tasks.find(x => x.id === taskId)
         if (!task) return res.status(404).json({ error: 'Task not found' })
 
@@ -55,7 +65,7 @@ export default function handler(req, res) {
       }
 
       case 'DELETE': {
-        const { taskId } = req.body || {}
+        const { taskId } = req.body as { taskId?: string }
         const idx = board.tasks.findIndex(x => x.id === taskId)
         if (idx === -1) return res.status(404).json({ error: 'Task not found' })
 
