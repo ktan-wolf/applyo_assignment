@@ -2,6 +2,12 @@
 import { boards } from '../../../lib/data'
 import { getUserFromReq } from '../../../lib/auth'
 export default function handler(req,res){
+  const { id } = req.query
+
+  // Prevent accidental hit when /api/boards (no id) is routed here
+  if (!id || id === '' || id === 'undefined' || id === 'null') {
+    return res.status(404).end('Not Found')
+  }
   const userId = getUserFromReq(req)
   if(!userId) return res.status(401).end('Not authenticated')
   const { id } = req.query
