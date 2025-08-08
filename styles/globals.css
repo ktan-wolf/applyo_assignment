@@ -1,0 +1,227 @@
+html, body, #__next {
+    height: 100%;
+}
+  
+body {
+    margin: 0;
+    font-family: Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+    background: #f6f8fa;
+    color: #0f172a;
+    line-height: 1.5;
+}
+  
+/* Container */
+.container {
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 20px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 6px 18px rgba(2, 6, 23, 0.08);
+    transition: box-shadow 0.3s ease, background 0.3s ease, color 0.3s ease;
+}
+.container:hover {
+    box-shadow: 0 8px 24px rgba(2, 6, 23, 0.12);
+}
+  
+/* Header */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+}
+  
+/* Inputs & form elements */
+input, textarea, select, button {
+    font-family: inherit;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    padding: 6px 10px;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.3s ease, color 0.3s ease;
+}
+input:focus, textarea:focus, select:focus {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.3);
+    outline: none;
+}
+  
+/* Boards layout */
+.boards {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+  
+/* Board card */
+.board {
+    flex: 1 1 240px;
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid #e6edf3;
+    background: #fff;
+    transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.3s ease, border-color 0.3s ease;
+}
+.board:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(2, 6, 23, 0.08);
+}
+  
+/* Task */
+.task {
+    padding: 8px;
+    border-radius: 6px;
+    border: 1px solid #eef3f7;
+    margin-bottom: 8px;
+    background: #fbfdff;
+    transition: background 0.2s ease, border-color 0.3s ease;
+}
+.task:hover {
+    background: #f1f5f9;
+}
+  
+/* Muted text */
+.muted {
+    color: #6b7280;
+    font-size: 13px;
+}
+  
+/* Buttons */
+.btn {
+    padding: 8px 12px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    transition: background 0.2s ease, transform 0.1s ease, color 0.3s ease;
+}
+.btn:hover {
+    transform: translateY(-1px);
+}
+  
+.btn-primary {
+    background: #2563eb;
+    color: white;
+}
+.btn-primary:hover {
+    background: #1d4ed8;
+}
+  
+.btn-danger {
+    background: #ef4444;
+    color: white;
+}
+.btn-danger:hover {
+    background: #dc2626;
+}
+  
+/* ✅ Navigation Buttons Light Mode */
+.btn-home {
+    background: #16a34a; /* green */
+    color: white;
+}
+.btn-home:hover {
+    background: #15803d;
+}
+  
+.btn-register {
+    background: #9333ea; /* purple */
+    color: white;
+}
+.btn-register:hover {
+    background: #7e22ce;
+}
+  
+.btn-login {
+    background: #f59e0b; /* amber */
+    color: white;
+}
+.btn-login:hover {
+    background: #d97706;
+}
+  
+/* 🌙 Dark Mode */
+.dark body {
+    background: #0f172a;
+    color: #f1f5f9;
+}
+  
+.dark .container {
+    background: #1e293b;
+    color: #f1f5f9;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.4);
+}
+  
+.dark .board {
+    background: #273449;
+    border-color: #334155;
+}
+.dark .board:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
+}
+  
+.dark .task {
+    background: #1e293b;
+    border-color: #334155;
+}
+.dark .task:hover {
+    background: #2d3b54;
+}
+  
+.dark .muted {
+    color: #94a3b8;
+}
+  
+.dark input, 
+.dark textarea, 
+.dark select {
+    background: #334155;
+    color: #f1f5f9;
+    border-color: #475569;
+}
+.dark input:focus, 
+.dark textarea:focus, 
+.dark select:focus {
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.4);
+}
+  
+.dark .btn-primary {
+    background: #3b82f6;
+    color: white;
+}
+.dark .btn-primary:hover {
+    background: #2563eb;
+}
+  
+.dark .btn-danger {
+    background: #ef4444;
+    color: white;
+}
+.dark .btn-danger:hover {
+    background: #dc2626;
+}
+  
+/* ✅ Dark Mode Navigation Buttons (Updated Colors) */
+.dark .btn-home {
+    background: #4ade80; /* softer, brighter green */
+    color: #1e293b;
+}
+.dark .btn-home:hover {
+    background: #22c55e;
+}
+  
+.dark .btn-register {
+    background: #c084fc; /* softer, brighter purple */
+    color: #1e293b;
+}
+.dark .btn-register:hover {
+    background: #a855f7;
+}
+  
+.dark .btn-login {
+    background: #fde047; /* softer yellow */
+    color: #1e293b;
+}
+.dark .btn-login:hover {
+    background: #facc15;
+}

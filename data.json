@@ -1,0 +1,69 @@
+{
+  "users": [
+    {
+      "id": "1754656751420",
+      "name": "ketan",
+      "email": "ketan@gmail.com",
+      "passwordHash": "$2a$08$Lv/cyjpAFovCjPbemb5Jbu3b38Y3vkeG9XV4gNafAJXru.1VKJr4e"
+    },
+    {
+      "id": "1754656858371",
+      "name": "sumit",
+      "email": "sumit@gmail.com",
+      "passwordHash": "$2a$08$j.4eD4zgHgfoPooo9UP0/eaXVty4gWLSbUsZ3PpvmPndDTj714bgS"
+    }
+  ],
+  "boards": [
+    {
+      "id": "1754656772438",
+      "ownerId": "1754656751420",
+      "title": "asdf",
+      "tasks": []
+    },
+    {
+      "id": "1754656774828",
+      "ownerId": "1754656751420",
+      "title": "asdf",
+      "tasks": [
+        {
+          "id": "1754656830669",
+          "title": "asdfjl",
+          "description": "lkjfdas\n",
+          "completed": true,
+          "createdAt": "2025-08-08T12:40:30.669Z",
+          "dueDate": "2025-08-29"
+        }
+      ]
+    },
+    {
+      "id": "1754656873777",
+      "ownerId": "1754656858371",
+      "title": "work",
+      "tasks": [
+        {
+          "id": "1754659522514",
+          "title": "dsfk;l",
+          "description": "asdfjl;",
+          "completed": true,
+          "createdAt": "2025-08-08T13:25:22.514Z",
+          "dueDate": "2025-08-19"
+        }
+      ]
+    },
+    {
+      "id": "1754656877501",
+      "ownerId": "1754656858371",
+      "title": "personal",
+      "tasks": [
+        {
+          "id": "1754656893770",
+          "title": "sdfaklj;",
+          "description": "asdfkl;",
+          "completed": true,
+          "createdAt": "2025-08-08T12:41:33.770Z",
+          "dueDate": "2025-08-28"
+        }
+      ]
+    }
+  ]
+}
