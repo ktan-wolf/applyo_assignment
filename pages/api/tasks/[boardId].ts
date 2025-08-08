@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { boards, users, saveData } from '../../lib/data'
-import { getUserFromReq } from '../../lib/auth'
+import { boards, users, saveData } from '../../../lib/data'
+import { getUserFromReq } from '../../../lib/auth'
 
 export default function handler(req: NextApiRequest, res: NextApiResponse) {
   try {
