@@ -5,9 +5,14 @@ import { getUserFromReq } from '../../../lib/auth'
 export default function handler(req: NextApiRequest, res: NextApiResponse) {
   try {
     const userId = getUserFromReq(req)
-    if (!userId) return res.status(401).json({ error: 'Not authenticated' })
+    if (!userId) {
+      return res.status(401).json({ error: 'Not authenticated' })
+    }
 
-    const { boardId } = req.query
+    // Ensure boardId is always a string
+    const boardIdParam = req.query.boardId
+    const boardId = Array.isArray(boardIdParam) ? boardIdParam[0] : boardIdParam
+
     const board = boards.find(b => b.id === boardId)
     if (!board) return res.status(404).json({ error: 'Board not found' })
     if (board.ownerId !== userId) return res.status(403).json({ error: 'Forbidden' })
@@ -78,7 +83,7 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
         return res.status(405).json({ error: 'Method not allowed' })
     }
   } catch (error) {
-    console.error(error)
+    console.error('API error in tasks/[boardId].ts:', error)
     return res.status(500).json({ error: 'Internal server error' })
   }
 }
