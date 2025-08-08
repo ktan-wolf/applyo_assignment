@@ -1,69 +1,106 @@
 // pages/api/tasks.ts
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { boards, users, saveData } from '../../../lib/data';
-import { getUserFromReq } from '../../../lib/auth';
+import { boards, users, saveData } from '../../lib/data';
+import { getUserFromReq } from '../../lib/auth';
 
 export default function handler(req: NextApiRequest, res: NextApiResponse) {
   try {
     const userId = getUserFromReq(req);
-    if (!userId) return res.status(401).end('Not authenticated');
-
-    const { boardId } = req.body || {};
-    if (!boardId) return res.status(400).end('Missing boardId');
-
-    const board = boards.find(b => b.id === boardId);
-    if (!board) return res.status(404).end('Board not found');
-    if (board.ownerId !== userId) return res.status(403).end('Forbidden');
-
-    if (req.method === 'POST') {
-      const { title, description, dueDate } = req.body || {};
-      if (!title) return res.status(400).end('Missing title');
-
-      const t = {
-        id: Date.now().toString(),
-        title,
-        description: description || '',
-        completed: false,
-        createdAt: new Date().toISOString(),
-        dueDate: dueDate || null
-      };
-      board.tasks.push(t);
-      saveData({ users, boards });
-      return res.status(201).json(t);
+    if (!userId) {
+      return res.status(401).json({ error: 'Not authenticated' });
     }
 
-    if (req.method === 'PUT') {
-      const { taskId } = req.body || {};
-      const t = board.tasks.find(x => x.id === taskId);
-      if (!t) return res.status(404).end('Task not found');
-      t.completed = !t.completed;
-      saveData({ users, boards });
-      return res.status(200).json(t);
+    const { boardId } = req.query;
+    if (typeof boardId !== 'string') {
+      return res.status(400).json({ error: 'Invalid boardId' });
     }
 
-    if (req.method === 'PATCH') {
-      const { taskId, title, description, dueDate } = req.body || {};
-      const t = board.tasks.find(x => x.id === taskId);
-      if (!t) return res.status(404).end('Task not found');
-      if (title !== undefined) t.title = title;
-      if (description !== undefined) t.description = description;
-      if (dueDate !== undefined) t.dueDate = dueDate;
-      saveData({ users, boards });
-      return res.status(200).json(t);
+    const board = boards.find((b) => b.id === boardId);
+    if (!board) {
+      return res.status(404).json({ error: 'Board not found' });
     }
 
-    if (req.method === 'DELETE') {
-      const { taskId } = req.body || {};
-      const idx = board.tasks.findIndex(x => x.id === taskId);
-      if (idx === -1) return res.status(404).end('Task not found');
-      board.tasks.splice(idx, 1);
-      saveData({ users, boards });
-      return res.status(200).end('deleted');
+    if (board.ownerId !== userId) {
+      return res.status(403).json({ error: 'Forbidden' });
     }
 
-    return res.status(405).end('Method not allowed');
-  } catch (err) {
-    console.error('API error:', err);
-    return res.status(500).end('Internal Server Error');
+    switch (req.method) {
+      case 'POST': {
+        const { title, description, dueDate } = req.body || {};
+        if (!title) {
+          return res.status(400).json({ error: 'Missing title' });
+        }
+
+        const task = {
+          id: Date.now().toString(),
+          title,
+          description: description || '',
+          completed: false,
+          createdAt: new Date().toISOString(),
+          dueDate: dueDate || null,
+        };
+
+        board.tasks.push(task);
+        saveData({ users, boards });
+        return res.status(201).json(task);
+      }
+
+      case 'PUT': {
+        const { taskId } = req.body || {};
+        if (!taskId) {
+          return res.status(400).json({ error: 'Missing taskId' });
+        }
+
+        const task = board.tasks.find((x) => x.id === taskId);
+        if (!task) {
+          return res.status(404).json({ error: 'Task not found' });
+        }
+
+        task.completed = !task.completed;
+        saveData({ users, boards });
+        return res.status(200).json(task);
+      }
+
+      case 'PATCH': {
+        const { taskId, title, description, dueDate } = req.body || {};
+        if (!taskId) {
+          return res.status(400).json({ error: 'Missing taskId' });
+        }
+
+        const task = board.tasks.find((x) => x.id === taskId);
+        if (!task) {
+          return res.status(404).json({ error: 'Task not found' });
+        }
+
+        if (title !== undefined) task.title = title;
+        if (description !== undefined) task.description = description;
+        if (dueDate !== undefined) task.dueDate = dueDate;
+
+        saveData({ users, boards });
+        return res.status(200).json(task);
+      }
+
+      case 'DELETE': {
+        const { taskId } = req.body || {};
+        if (!taskId) {
+          return res.status(400).json({ error: 'Missing taskId' });
+        }
+
+        const idx = board.tasks.findIndex((x) => x.id === taskId);
+        if (idx === -1) {
+          return res.status(404).json({ error: 'Task not found' });
+        }
+
+        board.tasks.splice(idx, 1);
+        saveData({ users, boards });
+        return res.status(200).json({ message: 'Deleted successfully' });
+      }
+
+      default:
+        return res.status(405).json({ error: 'Method not allowed' });
+    }
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: 'Internal server error' });
   }
 }
