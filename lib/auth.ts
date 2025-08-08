@@ -3,7 +3,7 @@ import jwt from 'jsonwebtoken'
 import { parse } from 'cookie'
 import { users } from './data'
 
-const SECRET = 'CHANGE_THIS_SECRET_IN_PROD'
+const SECRET = process.env.JWT_SECRET;
 
 export function getUserFromReq(req) {
   const cookie = req.headers.cookie
