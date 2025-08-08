@@ -1,12 +1,13 @@
 // lib/data.ts
+// In-memory data store (will reset on server restart)
 
-// In-memory storage — persists only during the lifetime of the server instance
-// On Vercel, this resets when the function restarts or redeploys.
-export const users: any[] = [];
-export const boards: any[] = [];
+// Initial empty arrays
+const users: any[] = []
+const boards: any[] = []
 
-// Helper to reset data (optional, for testing)
-export function resetData() {
-  users.length = 0;
-  boards.length = 0;
+// Dummy saveData function (no-op here because no file writes)
+function saveData(data: { users: any[]; boards: any[] }) {
+  // No file system, so do nothing
 }
+
+export { users, boards, saveData }
